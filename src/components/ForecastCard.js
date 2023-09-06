@@ -1,6 +1,8 @@
 function ForecastCard() {
     return(
-        <div>ForecastCard!</div>
+        <div>
+            ForecastCard!
+        </div>
     );
 }
 
