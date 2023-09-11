@@ -4,42 +4,60 @@ import { getPhoto, searchCity, searchWeather, currentWeather } from "./api";
 import { useEffect, useState } from "react";
 
 function App() {
-    const [image, setImage] = useState(null);
-    const [weather, setWeather] = useState("null");
-    const [currentTemp, setCurrentTemp] = useState("null");
-    const [city, setCity] = useState('');
+	const [image, setImage] = useState(null);
+	const [weather, setWeather] = useState("null");
+	const [currentTemp, setCurrentTemp] = useState("null");
+	const [city, setCity] = useState("");
 
-    const handleSubmit = async (term) => {
-        const getCityKey = await searchCity(term);
-        const getForecast = await searchWeather(getCityKey.Key);
-        const getCurrentTemp = await currentWeather(getCityKey.Key);
+	const handleSubmit = async (term) => {
+		//logic for checking errors before continuing with other api calls 
+		if (term === '' || term === null || term === undefined) { return alert("ERROR: Please enter a valid location!")}
+		const getCityKey = await searchCity(term);
+		if (getCityKey >= 400 && getCityKey <= 499) {
+			return alert(`ERROR: ${getCityKey}... Something went wrong, try again later!`);
+		} else if (getCityKey >= 500) {
+            return alert(`ERROR: ${getCityKey}... Weather API is down or out of requests!`);
+        } else if (getCityKey === undefined) {
+			return alert("ERROR: Please enter a valid location!");
+		}
 
-        setCity(getCityKey.EnglishName + ", " + getCityKey.Country.ID);
-        setWeather(getForecast);
-        setCurrentTemp(getCurrentTemp)
-    }
+		const getForecast = await searchWeather(getCityKey.Key);
+		const getCurrentTemp = await currentWeather(getCityKey.Key);
 
-    useEffect(() => {
-        const photoTerm = ["mountains", "trees", "nature", "city"];
-        const fetchImage = async () => {
-            const bgPhoto = await getPhoto(photoTerm[Math.floor(Math.random()*4)])
+		setCity(getCityKey.EnglishName + ", " + getCityKey.Country.ID);
+		setWeather(getForecast);
+		setCurrentTemp(getCurrentTemp);
+	};
 
-            setImage(bgPhoto);
-        }
+	useEffect(() => { //making sure we only call this API upon the page loading and not any other time
+		const photoTerm = ["mountains", "trees", "nature"];
+		const fetchImage = async () => {
+			const bgPhoto = await getPhoto(photoTerm[Math.floor(Math.random() * 4)]);
 
-        fetchImage()
-            .catch(console.error);
-    }, [])
+			setImage(bgPhoto);
+		};
 
-    return(
-        <div>
-            <label className="flex text-neutral-50 font-thin justify-center text-3xl">React Weather App</label>
-            <SearchBar onSubmit={handleSubmit}/>
-            <div className="flex justify-center">
-                <MainCard image={image} weather={weather} currentTemp={currentTemp} city={city}/>
-            </div>
-        </div>
-    );
+		fetchImage().catch(console.error);
+	}, []);
+
+	return (
+		<div className="mt-[80px]">
+			<div className="flex justify-center">
+				<label className="text-neutral-50 font-thin hover:font-bold text-5xl mb-[80px]">
+					React Weather App
+				</label>
+			</div>
+			<SearchBar onSubmit={handleSubmit} />
+			<div className="flex justify-center">
+				<MainCard
+					image={image}
+					weather={weather}
+					currentTemp={currentTemp}
+					city={city}
+				/>
+			</div>
+		</div>
+	);
 }
 
 export default App;
