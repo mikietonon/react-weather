@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 
 function App() {
 	const [image, setImage] = useState(null);
-	const [weather, setWeather] = useState("null");
-	const [currentTemp, setCurrentTemp] = useState("null");
+	const [weather, setWeather] = useState(null);
+	const [currentTemp, setCurrentTemp] = useState(null);
 	const [city, setCity] = useState("");
 
 	const handleSubmit = async (term) => {
@@ -30,9 +30,9 @@ function App() {
 	};
 
 	useEffect(() => { //making sure we only call this API upon the page loading and not any other time
-		const photoTerm = ["mountains", "trees", "nature"];
+		const photoTerm = ["mountains", "landscape", "nature"];
 		const fetchImage = async () => {
-			const bgPhoto = await getPhoto(photoTerm[Math.floor(Math.random() * 4)]);
+			const bgPhoto = await getPhoto(photoTerm[Math.floor(Math.random() * 3)]);
 
 			setImage(bgPhoto);
 		};

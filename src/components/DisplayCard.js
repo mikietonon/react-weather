@@ -27,12 +27,12 @@ function DisplayCard({ weather, currentTemp, city }) {
                 </div>
             </div>
             <div className="mt-auto">
-                <h1 className="text-8xl ml-[-10px] mb-[-7px]">{getWeatherIcon(currentTemp[0].WeatherIcon)}</h1>
+                {currentTemp === null ? (<h1 className="text-8xl ml-[-10px] mb-[-7px]"><WiNa /></h1>) : <h1 className="text-8xl ml-[-10px] mb-[-7px]">{getWeatherIcon(currentTemp[0].WeatherIcon)}</h1>}
                 <div className="flex items-center text-4xl">
-                    {weather === "null" ? (<h1 className="font-bold text-4xl mr-[-10px]"><WiNa /></h1>) : <h1 className="font-bold text-4xl mr-[-10px]">{currentTemp[0].ApparentTemperature.Metric.Value}</h1>}
+                    {weather === null ? (<h1 className="font-bold text-4xl mr-[-10px]"><WiNa /></h1>) : <h1 className="font-bold text-4xl mr-[-10px]">{currentTemp[0].ApparentTemperature.Metric.Value}</h1>}
                     <WiCelsius className="mb-[5px]" />
                 </div>
-                {weather === "null" ? (<h1 className="font-thin text-3xl"><WiNa /></h1>) : <h1 className="font-thin text-3xl">{currentTemp[0].WeatherText}</h1>}
+                {weather === null ? (<h1 className="font-thin text-3xl"><WiNa /></h1>) : <h1 className="font-thin text-3xl">{currentTemp[0].WeatherText}</h1>}
             </div>
         </div>
     );
