@@ -8,8 +8,10 @@ function App() {
 	const [weather, setWeather] = useState(null);
 	const [currentTemp, setCurrentTemp] = useState(null);
 	const [city, setCity] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSubmit = async (term) => {
+		setIsLoading(true);
 		//logic for checking errors before continuing with other api calls 
 		if (term === '' || term === null || term === undefined) { return alert("ERROR: Please enter a valid location!")}
 		const getCityKey = await searchCity(term);
@@ -27,6 +29,7 @@ function App() {
 		setCity(getCityKey.EnglishName + ", " + getCityKey.Country.ID);
 		setWeather(getForecast);
 		setCurrentTemp(getCurrentTemp);
+		setIsLoading(false);
 	};
 
 	useEffect(() => { //making sure we only call this API upon the page loading and not any other time
@@ -54,6 +57,7 @@ function App() {
 					weather={weather}
 					currentTemp={currentTemp}
 					city={city}
+					isLoading={isLoading}
 				/>
 			</div>
 		</div>

@@ -3,15 +3,16 @@ import ToggleSwitch from './ToggleSwitch';
 import ScrollingText from './ScrollingText';
 import { useState } from 'react';
 
-function InfoCard({ weather }) {
+function InfoCard({ weather, indexNum, setGetTime }) {
     const [checkDay, setCheckDay] = useState('Day');
-    const iconNum = 1;
 
     const handleClick = () => {
         if (checkDay === 'Day') {
             setCheckDay('Night');
+            setGetTime('Night');
         } else {
             setCheckDay('Day');
+            setGetTime('Day');
         }
     };
 
@@ -30,7 +31,7 @@ function InfoCard({ weather }) {
             return <ScrollingText text={"Enter a location."}/>;
             
         } else {
-            return <ScrollingText text={weather.DailyForecasts[iconNum][checkDay].LongPhrase}/>;
+            return <ScrollingText text={weather.DailyForecasts[indexNum][checkDay].LongPhrase}/>;
         }
     };
 
@@ -60,24 +61,24 @@ function InfoCard({ weather }) {
                 <>
                     <span className='flex'>
                         <h1 className='mr-auto'>Wind:</h1>
-                        <h1 className='font-thin'>{weather.DailyForecasts[iconNum][checkDay].Wind.Speed.Value} {weather.DailyForecasts[iconNum][checkDay].Wind.Speed.Unit} - {weather.DailyForecasts[iconNum][checkDay].Wind.Direction.English}</h1>
+                        <h1 className='font-thin'>{weather.DailyForecasts[indexNum][checkDay].Wind.Speed.Value} {weather.DailyForecasts[indexNum][checkDay].Wind.Speed.Unit} - {weather.DailyForecasts[indexNum][checkDay].Wind.Direction.English}</h1>
                     </span>
                     <span className='flex'>
                         <h1 className='mr-auto'>Air Quality:</h1>
-                        <h1 className='font-thin'>{weather.DailyForecasts[iconNum].AirAndPollen[0].Category}</h1>
+                        <h1 className='font-thin'>{weather.DailyForecasts[indexNum].AirAndPollen[0].Category}</h1>
                     </span>
                     <span className='flex'>
                         <h1 className='mr-auto'>UV Index:</h1>
-                        <h1 className='font-thin'>{weather.DailyForecasts[iconNum].AirAndPollen[5].Category}</h1>
+                        <h1 className='font-thin'>{weather.DailyForecasts[indexNum].AirAndPollen[5].Category}</h1>
                     </span>
                     <span className='flex'>
                         <h1 className='mr-auto'>High:</h1>
-                        <h1 className='font-thin flex flex-row'>{weather.DailyForecasts[iconNum].Temperature.Maximum.Value}</h1>
+                        <h1 className='font-thin flex flex-row'>{weather.DailyForecasts[indexNum].Temperature.Maximum.Value}</h1>
                         <WiCelsius className="ml-[-5px] text-2xl"/>
                     </span>
                     <span className='flex'>
                         <h1 className='mr-auto'>Low:</h1>
-                        <h1 className='font-thin flex flex-row'>{weather.DailyForecasts[iconNum].Temperature.Minimum.Value}</h1>
+                        <h1 className='font-thin flex flex-row'>{weather.DailyForecasts[indexNum].Temperature.Minimum.Value}</h1>
                         <WiCelsius className="ml-[-5px] text-2xl"/>
                     </span>
                 </>
@@ -90,17 +91,15 @@ function InfoCard({ weather }) {
             <>
                 <div className='grow'>
                     {checkDay === 'Day' ? <WiSunrise className='text-4xl m-auto'/> : <WiMoonrise className='text-4xl m-auto'/>}
-                    <h1 className='text-center'>{weather === null ? `.` : (checkDay === 'Day') ? `${converter(weather.DailyForecasts[iconNum].Sun.Rise)}` : `${converter(weather.DailyForecasts[iconNum].Moon.Rise)}`}</h1>
+                    <h1 className='text-center'>{weather === null ? `.` : (checkDay === 'Day') ? `${converter(weather.DailyForecasts[indexNum].Sun.Rise)}` : `${converter(weather.DailyForecasts[indexNum].Moon.Rise)}`}</h1>
                 </div>
                 <div className='grow'>
                     {checkDay === 'Day' ? <WiSunset className='text-4xl m-auto'/> : <WiMoonset className='text-4xl m-auto'/>}
-                    <h1 className='text-center'>{weather === null ? `.` : (checkDay === 'Day') ? `${converter(weather.DailyForecasts[iconNum].Sun.Set)}` : `${converter(weather.DailyForecasts[iconNum].Moon.Set)}`}</h1>
+                    <h1 className='text-center'>{weather === null ? `.` : (checkDay === 'Day') ? `${converter(weather.DailyForecasts[indexNum].Sun.Set)}` : `${converter(weather.DailyForecasts[indexNum].Moon.Set)}`}</h1>
                 </div>
             </>
         );
     };
-
-    console.log(weather)
 
     return(
         <div className="flex flex-col grow ml-[12px] mr-[12px] font-bold text-white max-w-[600px]">
