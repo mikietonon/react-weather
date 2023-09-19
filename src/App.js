@@ -13,13 +13,16 @@ function App() {
 	const handleSubmit = async (term) => {
 		setIsLoading(true);
 		//logic for checking errors before continuing with other api calls 
-		if (term === '' || term === null || term === undefined) { return alert("ERROR: Please enter a valid location!")}
+		if (term === '' || term === null || term === undefined) { setIsLoading(false); return alert("ERROR: Please enter a valid location!")}
 		const getCityKey = await searchCity(term);
 		if (getCityKey >= 400 && getCityKey <= 499) {
+			setIsLoading(false);
 			return alert(`ERROR: ${getCityKey}... Something went wrong, try again later!`);
 		} else if (getCityKey >= 500) {
+			setIsLoading(false);
             return alert(`ERROR: ${getCityKey}... Weather API is down or out of requests!`);
         } else if (getCityKey === undefined) {
+			setIsLoading(false);
 			return alert("ERROR: Please enter a valid location!");
 		}
 
@@ -44,14 +47,14 @@ function App() {
 	}, []);
 
 	return (
-		<div className="mt-[80px]">
-			<div className="flex justify-center">
-				<label className="text-neutral-50 font-thin hover:font-bold text-5xl mb-[80px]">
-					React Weather App
-				</label>
+		<div className="mt-[20px] flex flex-col min-w-[380px]">
+			<label className="flex text-neutral-50 m-auto font-thin text-center hover:font-bold text-5xl mb-[80px]">
+				React Weather App
+			</label>
+			<div>
+				<SearchBar onSubmit={handleSubmit} />
 			</div>
-			<SearchBar onSubmit={handleSubmit} />
-			<div className="flex justify-center">
+			<div className="w-full sm:w-auto sm:m-auto p-3">
 				<MainCard
 					image={image}
 					weather={weather}

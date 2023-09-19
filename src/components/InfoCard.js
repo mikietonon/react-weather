@@ -102,7 +102,7 @@ function InfoCard({ weather, indexNum, setGetTime }) {
     };
 
     return(
-        <div className="flex flex-col grow ml-[12px] mr-[12px] font-bold text-white max-w-[600px]">
+        <div className="flex flex-col grow ml-[12px] mr-[12px] font-bold text-white w-[100px] md:w-[300px] sm:w-[300px]">
             <div className="text-lg grow">
                 <span className='flex'>
                     {checkScrollingText()}
